@@ -25,6 +25,10 @@ export default function middleware(req: Request) {
     headers: {
       'WWW-Authenticate': 'Basic realm="rundosolar preview", charset="UTF-8"',
       'Content-Type': 'text/plain; charset=UTF-8',
+      // 诊断头（仅显示长度，不泄漏值）
+      'x-debug-user-len': String(process.env.PREVIEW_USER?.length ?? 0),
+      'x-debug-pass-len': String(process.env.PREVIEW_PASS?.length ?? 0),
+      'x-debug-has-header': String(!!authHeader),
     },
   });
 }
