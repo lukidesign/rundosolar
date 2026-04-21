@@ -1,0 +1,21 @@
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+import 'virtual:windi-base.css';
+import 'virtual:windi-components.css';
+import 'virtual:svg-icons-register';
+import App from './App.vue';
+import router from './router';
+import PageWrapper from './components/PageWrapper.vue';
+import SvgIcon from './components/SvgIcon.vue';
+import './styles/index.less';
+import 'virtual:windi-utilities.css';
+
+const app = createApp(App);
+app.use(createPinia());
+app.use(router);
+app.use(Antd);
+app.component('PageWrapper', PageWrapper);
+app.component('SvgIcon', SvgIcon);
+app.mount('#app');
