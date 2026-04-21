@@ -5,7 +5,9 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 import WindiCSS from 'vite-plugin-windicss';
 import { resolve } from 'path';
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  // GitHub Pages 部署在 /rundosolar/ 子路径；本地 dev 仍是根路径
+  base: command === 'build' ? '/rundosolar/' : '/',
   plugins: [
     vue(),
     WindiCSS(),
@@ -15,8 +17,13 @@ export default defineConfig({
     }),
     viteMockServe({
       mockPath: 'mock',
-      enable: true,
-      logger: true,
+      localEnabled: command === 'serve',
+      prodEnabled: command !== 'serve',
+      injectCode: `
+        import { setupProdMockServer } from './mockProdServer';
+        setupProdMockServer();
+      `,
+      logger: false,
     }),
   ],
   resolve: {
@@ -35,4 +42,4 @@ export default defineConfig({
     port: 5173,
     host: '0.0.0.0',
   },
-});
+}));
