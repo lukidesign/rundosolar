@@ -67,11 +67,16 @@ const PROBLEM_DETAILS = [
   'SVG 设备告警灯常亮',
 ];
 
+// 用 btoa 而不是 Node 的 Buffer —— prod mock 运行在浏览器里，没有 Buffer 全局
+const _b64 = (s: string) =>
+  typeof Buffer !== 'undefined'
+    ? Buffer.from(s).toString('base64')
+    : btoa(s);
 const SAMPLE_IMG =
   'data:image/svg+xml;base64,' +
-  Buffer.from(
+  _b64(
     `<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect width="100%" height="100%" fill="#cfd8dc"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#455a64" font-size="18">Flaw</text></svg>`,
-  ).toString('base64');
+  );
 
 let autoId = 1;
 const db: HiddenFlawItem[] = [];
