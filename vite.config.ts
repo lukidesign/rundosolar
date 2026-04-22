@@ -6,8 +6,13 @@ import WindiCSS from 'vite-plugin-windicss';
 import { resolve } from 'path';
 
 export default defineConfig(({ command }) => ({
-  // GitHub Pages 部署在 /rundosolar/ 子路径；本地 dev 仍是根路径
-  base: command === 'build' ? '/rundosolar/' : '/',
+  // base 路径按构建环境切换：
+  //   - GitHub Actions（Pages）→ /rundosolar/（子路径部署）
+  //   - Vercel / 本地 / 其他 → /（根域名部署）
+  base:
+    command === 'build' && process.env.GITHUB_ACTIONS
+      ? '/rundosolar/'
+      : '/',
   plugins: [
     vue(),
     WindiCSS(),
